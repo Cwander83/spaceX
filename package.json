@@ -12,6 +12,7 @@
   },
   "author": "Chris Wander",
   "license": "ISC",
+  "homepage": "https://github.com/Cwander83/spaceX",
   "dependencies": {
     "axios": "^0.18.0",
     "concurrently": "^4.1.0",
