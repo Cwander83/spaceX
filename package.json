@@ -10,7 +10,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Chris Wander",
-  "license": "MIT",
+  "license": "ISC",
   "homepage": "https://github.com/Cwander83/spaceX",
   "dependencies": {
     "axios": "^0.18.1",
