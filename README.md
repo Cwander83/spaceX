@@ -1,8 +1,8 @@
 # spaceX
 
-## Live site: https://safe-garden-24124.herokuapp.com/
+## Live site: <https://safe-garden-24124.herokuapp.com/>
 
-### Used:
+### Used
 
 - React
 - Node.js
@@ -10,6 +10,6 @@
 - apollo
 - CSS
 
-### Summary:
+### Summary
 
 I used the spaceX api and pulled info on Rocket lauches list and button to show that launch details
