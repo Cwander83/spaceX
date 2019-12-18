@@ -7,19 +7,17 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Chris Wander",
   "license": "ISC",
   "homepage": "https://github.com/Cwander83/spaceX",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "concurrently": "^4.1.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
-    "gh-pages": "^2.1.1",
     "graphql": "^14.2.1"
   },
   "devDependencies": {
