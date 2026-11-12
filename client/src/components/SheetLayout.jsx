@@ -74,7 +74,7 @@ export default function SheetLayout() {
                 SpaceX Launch Tracker — Flight Telemetry Manual
               </h1>
               <p className="top-bar-subtitle">
-                0px architectural grid · Live drum-plotter telemetry · GraphQL feed
+                Architectural grid · Live drum-plotter telemetry
               </p>
             </div>
           </div>
