@@ -272,4 +272,34 @@ describe('GraphQL & Express 5 server', () => {
     assert.equal(list[1].status_abbrev, 'Go');
     assert.equal(list[1].webcast_url, 'https://youtube.com/watch?v=ussf-317');
   });
+
+  it('GET / uses strong content-hash ETag, busts stale weak ETags, and caches no-cache', async () => {
+    const res = await originalFetch(`${baseUrl}/`);
+    assert.equal(res.status, 200);
+    assert.match(res.headers.get('content-type') || '', /text\/html/);
+    assert.match(res.headers.get('cache-control') || '', /no-cache/);
+    const etag = res.headers.get('etag') || '';
+    assert.match(etag, /^"[0-9a-f]{16}"$/);
+
+    const staleRes = await originalFetch(`${baseUrl}/`, {
+      headers: { 'If-None-Match': 'W/"278-1668f272800"' },
+    });
+    assert.equal(staleRes.status, 200);
+
+    const freshRes = await originalFetch(`${baseUrl}/`, {
+      headers: { 'If-None-Match': etag },
+    });
+    assert.equal(freshRes.status, 304);
+
+    const upcomingRes = await originalFetch(`${baseUrl}/upcoming`);
+    assert.equal(upcomingRes.status, 200);
+    assert.match(upcomingRes.headers.get('content-type') || '', /text\/html/);
+    assert.equal(upcomingRes.headers.get('etag'), etag);
+  });
+
+  it('GET missing /assets/*.js returns 404 text/plain instead of 200 text/html', async () => {
+    const res = await originalFetch(`${baseUrl}/assets/index-CddEXygh.js`);
+    assert.equal(res.status, 404);
+    assert.match(res.headers.get('content-type') || '', /text\/plain/);
+  });
 });
