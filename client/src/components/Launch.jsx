@@ -10,6 +10,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconCross,
+  IconExternalLink,
 } from './Icons.jsx';
 import VehicleSchematic from './VehicleSchematic.jsx';
 
@@ -31,6 +32,10 @@ export default function Launch() {
   });
 
   const launches = listData?.launches ?? [];
+  const cachedLaunch =
+    launches.find((item) => item.flight_number === parsedFlightNumber) || null;
+  const launchRecord = data?.launch ?? cachedLaunch;
+
   const currentIdx = launches.findIndex(
     (item) => item.flight_number === parsedFlightNumber
   );
@@ -73,7 +78,7 @@ export default function Launch() {
     );
   }
 
-  if (loading && !data?.launch) {
+  if (loading && !launchRecord) {
     return (
       <section
         className="state-panel"
@@ -94,7 +99,7 @@ export default function Launch() {
     );
   }
 
-  if (error) {
+  if (error && !launchRecord) {
     return (
       <section
         className="state-panel"
@@ -117,7 +122,7 @@ export default function Launch() {
     );
   }
 
-  if (!data?.launch) {
+  if (!launchRecord) {
     return (
       <section className="state-panel" aria-labelledby="detail-heading">
         <h3
@@ -144,11 +149,23 @@ export default function Launch() {
     launch_year,
     launch_date_local,
     launch_success,
+    status_name,
+    mission_description,
+    orbit_name,
+    orbit_abbrev,
+    pad_name,
+    pad_location,
+    webcast_url,
     rocket,
-  } = data.launch;
+  } = launchRecord;
 
   const isTransitioning = vtFlight === flight_number;
   const { utc, local } = formatTimestamps(launch_date_local);
+  const orbitDisplay = orbit_name
+    ? orbit_abbrev
+      ? `${orbit_name} (${orbit_abbrev})`
+      : orbit_name
+    : 'Unclassified / TBD';
 
   return (
     <section id="view-detail" aria-labelledby="detail-heading">
@@ -274,7 +291,7 @@ export default function Launch() {
               </dl>
             </div>
 
-            <div className="spec-grid-wrap-last">
+            <div className="spec-grid-wrap">
               <div className="spec-section-bar">
                 Section B // Launch Vehicle Hardware
               </div>
@@ -294,6 +311,64 @@ export default function Launch() {
                   <dd className="spec-dd">{rocket?.rocket_type ?? 'Unknown'}</dd>
                 </div>
               </dl>
+            </div>
+
+            <div className="spec-grid-wrap-last">
+              <div className="spec-section-bar">
+                Section C // Pad &amp; Orbital Parameters
+              </div>
+              <dl className="spec-grid-2">
+                <div className="spec-cell">
+                  <dt className="spec-dt">Launch Complex</dt>
+                  <dd className="spec-dd spec-dd-sans">
+                    {pad_name || 'Unassigned Pad'}
+                    {pad_location ? (
+                      <>
+                        <br />
+                        <span className="spec-dd-sub">{pad_location}</span>
+                      </>
+                    ) : null}
+                  </dd>
+                </div>
+                <div className="spec-cell">
+                  <dt className="spec-dt">Target Orbit</dt>
+                  <dd className="spec-dd spec-dd-sans">{orbitDisplay}</dd>
+                </div>
+                <div className="spec-cell">
+                  <dt className="spec-dt">Telemetry Status</dt>
+                  <dd className="spec-dd">
+                    {status_name ||
+                      (launch_success ? 'Launch Successful' : 'Launch Anomaly')}
+                  </dd>
+                </div>
+                <div className="spec-cell">
+                  <dt className="spec-dt">Webcast Archive</dt>
+                  <dd className="spec-dd">
+                    {webcast_url ? (
+                      <a
+                        href={webcast_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="manual-btn webcast-btn"
+                      >
+                        <span>Open Flight Webcast</span>
+                        <IconExternalLink />
+                      </a>
+                    ) : loading ? (
+                      <span className="spec-dd-sub">Checking Archive...</span>
+                    ) : (
+                      <span className="spec-dd-sub">No Archived Stream</span>
+                    )}
+                  </dd>
+                </div>
+              </dl>
+
+              {mission_description ? (
+                <div className="dossier-brief-box">
+                  <div className="spec-dt">Mission Brief</div>
+                  <p className="dossier-brief-copy">{mission_description}</p>
+                </div>
+              ) : null}
             </div>
           </div>
 

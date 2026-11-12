@@ -18,6 +18,8 @@
   --stamp-ok-bg: #dce8de;
   --stamp-err-fg: #8c1d13;
   --stamp-err-bg: #f5dcd8;
+  --stamp-standby-fg: #5c3d08;
+  --stamp-standby-bg: #f3e7ce;
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --font-sans: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -756,6 +758,140 @@ a {
   background: var(--stamp-err-bg);
   color: var(--stamp-err-fg);
   border-color: var(--stamp-err-fg);
+}
+
+.stamp-badge[data-status="standby"] {
+  background: var(--stamp-standby-bg);
+  color: var(--stamp-standby-fg);
+  border-color: var(--stamp-standby-fg);
+}
+
+/* Upcoming Sheet Countdown & Dossier Additions */
+.countdown-strip {
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: background-color 180ms var(--ease-expo), border-color 180ms var(--ease-expo), color 180ms var(--ease-expo);
+}
+
+.countdown-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  transition: color 180ms var(--ease-expo);
+}
+
+.countdown-clock {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--vermilion);
+  transition: color 180ms var(--ease-expo);
+}
+
+.upcoming-pad-line {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+  transition: color 180ms var(--ease-expo);
+}
+
+.upcoming-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-muted);
+  transition: color 180ms var(--ease-expo);
+}
+
+.upcoming-desc[data-expanded="false"] {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.upcoming-footer-bar {
+  min-height: 44px;
+  padding: 0 20px;
+  border-top: 1px solid var(--rule);
+  background: var(--paper-recessed);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  transition: background-color 180ms var(--ease-expo), color 180ms var(--ease-expo), border-color 180ms var(--ease-expo);
+}
+
+.launch-cell:hover .countdown-strip,
+.launch-cell:focus-within .countdown-strip {
+  background: #23211e;
+  border-color: rgba(248, 245, 238, 0.45);
+}
+
+.launch-cell:hover .countdown-label,
+.launch-cell:focus-within .countdown-label,
+.launch-cell:hover .upcoming-desc,
+.launch-cell:focus-within .upcoming-desc {
+  color: #d6cfc2;
+}
+
+.launch-cell:hover .countdown-clock,
+.launch-cell:focus-within .countdown-clock {
+  color: var(--vermilion-invert);
+}
+
+.launch-cell:hover .upcoming-pad-line,
+.launch-cell:focus-within .upcoming-pad-line {
+  color: var(--paper-bright);
+}
+
+.launch-cell:hover .upcoming-footer-bar,
+.launch-cell:focus-within .upcoming-footer-bar {
+  background: #23211e;
+  color: #d6cfc2;
+  border-top-color: rgba(248, 245, 238, 0.45);
+}
+
+.spec-dd-sub {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+
+.webcast-btn {
+  margin-top: 2px;
+}
+
+.dossier-brief-box {
+  padding: 18px 24px 22px;
+  border-top: 1px solid var(--rule-hairline);
+  background: var(--paper);
+}
+
+.dossier-brief-copy {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.62;
+  color: var(--ink);
+  max-width: 68ch;
 }
 
 .state-panel {

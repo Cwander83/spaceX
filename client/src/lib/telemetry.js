@@ -142,6 +142,8 @@ export function filterLaunches(launches = [], { filter = 'all', query = '' } = {
     const year = String(item?.launch_year ?? '').toLowerCase();
     const rocketName = String(item?.rocket?.rocket_name ?? '').toLowerCase();
     const rocketType = String(item?.rocket?.rocket_type ?? '').toLowerCase();
+    const padName = String(item?.pad_name ?? '').toLowerCase();
+    const orbitAbbrev = String(item?.orbit_abbrev ?? '').toLowerCase();
 
     return (
       mission.includes(q) ||
@@ -149,7 +151,93 @@ export function filterLaunches(launches = [], { filter = 'all', query = '' } = {
       paddedStr.includes(q) ||
       year.includes(q) ||
       rocketName.includes(q) ||
-      rocketType.includes(q)
+      rocketType.includes(q) ||
+      padName.includes(q) ||
+      orbitAbbrev.includes(q)
+    );
+  });
+}
+
+/**
+ * Format countdown clock to an upcoming NET ISO timestamp as "T- DDd HHh MMm SSs".
+ * @param {string | null | undefined} iso
+ * @param {number} [nowMs]
+ * @returns {{ clock: string, phase: 'unscheduled' | 'window-open' | 'countdown' }}
+ */
+export function formatCountdownTo(iso, nowMs = Date.now()) {
+  if (!iso) {
+    return { clock: 'T- --d --h --m --s', phase: 'unscheduled' };
+  }
+  const launchMs = Date.parse(iso);
+  if (Number.isNaN(launchMs)) {
+    return { clock: 'T- --d --h --m --s', phase: 'unscheduled' };
+  }
+  if (launchMs <= nowMs) {
+    return { clock: 'T- 00d 00h 00m 00s', phase: 'window-open' };
+  }
+
+  const diffSec = Math.floor((launchMs - nowMs) / 1000);
+  const d = String(Math.floor(diffSec / 86400)).padStart(2, '0');
+  const h = String(Math.floor((diffSec % 86400) / 3600)).padStart(2, '0');
+  const m = String(Math.floor((diffSec % 3600) / 60)).padStart(2, '0');
+  const s = String(diffSec % 60).padStart(2, '0');
+  return { clock: `T- ${d}d ${h}h ${m}m ${s}s`, phase: 'countdown' };
+}
+
+/**
+ * Map Launch Library 2 upcoming status abbreviation to stamp badge style & label.
+ * @param {string | null | undefined} statusAbbrev
+ * @returns {{ badgeStatus: 'nominal' | 'anomaly' | 'standby', label: string }}
+ */
+export function classifyUpcomingStatus(statusAbbrev) {
+  const raw = String(statusAbbrev || 'TBD').trim();
+  const lower = raw.toLowerCase();
+  if (lower === 'go' || lower === 'in flight') {
+    return { badgeStatus: 'nominal', label: raw.toUpperCase() };
+  }
+  if (lower === 'hold') {
+    return { badgeStatus: 'anomaly', label: 'HOLD' };
+  }
+  return { badgeStatus: 'standby', label: raw.toUpperCase() };
+}
+
+/**
+ * Filter upcoming launches by status tab ("all" | "go" | "pending") and free-text query.
+ * @param {Array<any>} items
+ * @param {{ status?: string, query?: string }} [options]
+ */
+export function filterUpcomingLaunches(items = [], { status = 'all', query = '' } = {}) {
+  if (!Array.isArray(items)) return [];
+  const q = String(query).trim().toLowerCase();
+
+  return items.filter((item) => {
+    const abbrev = String(item?.status_abbrev || '').toLowerCase();
+    const isGo = abbrev === 'go' || abbrev === 'in flight';
+    if (status === 'go' && !isGo) return false;
+    if (status === 'pending' && isGo) return false;
+    if (!q) return true;
+
+    const flightStr = String(item?.flight_number ?? '');
+    const paddedStr =
+      item?.flight_number != null ? padFlight(item.flight_number) : '';
+    const mission = String(item?.mission_name ?? '').toLowerCase();
+    const rocketName = String(item?.rocket?.rocket_name ?? '').toLowerCase();
+    const rocketType = String(item?.rocket?.rocket_type ?? '').toLowerCase();
+    const padName = String(item?.pad_name ?? '').toLowerCase();
+    const padLocation = String(item?.pad_location ?? '').toLowerCase();
+    const orbitAbbrev = String(item?.orbit_abbrev ?? '').toLowerCase();
+    const orbitName = String(item?.orbit_name ?? '').toLowerCase();
+
+    return (
+      mission.includes(q) ||
+      flightStr.includes(q) ||
+      (paddedStr && paddedStr.includes(q)) ||
+      rocketName.includes(q) ||
+      rocketType.includes(q) ||
+      padName.includes(q) ||
+      padLocation.includes(q) ||
+      orbitAbbrev.includes(q) ||
+      orbitName.includes(q)
     );
   });
 }

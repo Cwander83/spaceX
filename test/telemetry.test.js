@@ -125,6 +125,74 @@ describe('Telemetry pure helpers', () => {
     assert.equal(f1Err.isNominal, false);
     assert.equal(f1Err.regime, 'STAGE SEP ANOMALY');
   });
+
+  it('formats future T- countdowns, handles past windows, and classifies upcoming status stamps', async () => {
+    const {
+      formatCountdownTo,
+      classifyUpcomingStatus,
+      filterUpcomingLaunches,
+    } = await import('../client/src/lib/telemetry.js');
+
+    const nowMs = Date.parse('2026-11-12T12:00:00Z');
+    assert.deepEqual(
+      formatCountdownTo('2026-11-14T15:04:05Z', nowMs),
+      { clock: 'T- 02d 03h 04m 05s', phase: 'countdown' }
+    );
+    assert.deepEqual(
+      formatCountdownTo('2026-11-12T12:00:00Z', nowMs),
+      { clock: 'T- 00d 00h 00m 00s', phase: 'window-open' }
+    );
+    assert.deepEqual(formatCountdownTo(null, nowMs), {
+      clock: 'T- --d --h --m --s',
+      phase: 'unscheduled',
+    });
+
+    assert.deepEqual(classifyUpcomingStatus('Go'), {
+      badgeStatus: 'nominal',
+      label: 'GO',
+    });
+    assert.deepEqual(classifyUpcomingStatus('TBC'), {
+      badgeStatus: 'standby',
+      label: 'TBC',
+    });
+    assert.deepEqual(classifyUpcomingStatus('Hold'), {
+      badgeStatus: 'anomaly',
+      label: 'HOLD',
+    });
+
+    const sampleUpcoming = [
+      {
+        launch_id: 'u1',
+        flight_number: 746,
+        mission_name: 'Starlink 31-2',
+        status_abbrev: 'TBC',
+        pad_name: 'Orbital Launch Pad 2',
+        pad_location: 'Starbase, TX',
+        orbit_abbrev: 'LEO',
+        rocket: { rocket_name: 'Starship', rocket_type: 'V3' },
+      },
+      {
+        launch_id: 'u2',
+        flight_number: null,
+        mission_name: 'USSF-317',
+        status_abbrev: 'Go',
+        pad_name: 'SLC-4E',
+        pad_location: 'Vandenberg SFB, CA',
+        orbit_abbrev: 'PO',
+        rocket: { rocket_name: 'Falcon 9', rocket_type: 'Block 5' },
+      },
+    ];
+    assert.equal(filterUpcomingLaunches(sampleUpcoming, { status: 'go' }).length, 1);
+    assert.equal(filterUpcomingLaunches(sampleUpcoming, { status: 'pending' }).length, 1);
+    assert.equal(
+      filterUpcomingLaunches(sampleUpcoming, { query: 'vandenberg' })[0].launch_id,
+      'u2'
+    );
+    assert.equal(
+      filterUpcomingLaunches(sampleUpcoming, { query: 'starbase' })[0].launch_id,
+      'u1'
+    );
+  });
 });
 
 describe('1968 NASA / JPL UI design contracts', () => {

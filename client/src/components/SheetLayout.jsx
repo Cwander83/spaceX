@@ -18,8 +18,11 @@ export default function SheetLayout() {
   const stats = computeManifestStats(launches);
 
   const detailMatch = useMatch('/launch/:flight_number');
+  const upcomingMatch = useMatch('/upcoming');
   const routeFlight = detailMatch ? Number(detailMatch.params.flight_number) : null;
   const isDetailRoute = Boolean(detailMatch);
+  const isUpcomingRoute = Boolean(upcomingMatch);
+  const isManifestRoute = !isDetailRoute && !isUpcomingRoute;
 
   const {
     motionPaused,
@@ -80,7 +83,7 @@ export default function SheetLayout() {
             <Link
               to="/"
               className="top-bar-btn"
-              data-active={String(!isDetailRoute)}
+              data-active={String(isManifestRoute)}
               onClick={(e) =>
                 navigateSheet(e, '/', {
                   flightNumber: dossierTargetFlight,
@@ -102,6 +105,18 @@ export default function SheetLayout() {
               }
             >
               Sheet 02 · Dossier (#{padFlight(dossierTargetFlight)})
+            </Link>
+            <Link
+              to="/upcoming"
+              className="top-bar-btn"
+              data-active={String(isUpcomingRoute)}
+              onClick={(e) =>
+                navigateSheet(e, '/upcoming', {
+                  focusId: 'upcoming-heading',
+                })
+              }
+            >
+              Sheet 03 · Upcoming
             </Link>
             <button
               type="button"

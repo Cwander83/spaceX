@@ -5,12 +5,14 @@ import { SheetProvider } from './context/SheetContext.jsx';
 import SheetLayout from './components/SheetLayout.jsx';
 import Launches from './components/Launches.jsx';
 import Launch from './components/Launch.jsx';
+import UpcomingLaunches from './components/UpcomingLaunches.jsx';
 
 const client = new ApolloClient({
   link: new HttpLink({ uri: '/graphql' }),
   cache: new InMemoryCache({
     typePolicies: {
       Launch: { keyFields: ['flight_number'] },
+      UpcomingLaunch: { keyFields: ['launch_id'] },
       Rocket: { keyFields: false },
       Query: {
         fields: {
@@ -39,6 +41,7 @@ export default function App() {
           <Routes>
             <Route element={<SheetLayout />}>
               <Route path="/" element={<Launches />} />
+              <Route path="/upcoming" element={<UpcomingLaunches />} />
               <Route path="/launch/:flight_number" element={<Launch />} />
               <Route path="*" element={<Launch />} />
             </Route>
