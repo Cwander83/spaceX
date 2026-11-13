@@ -19,6 +19,16 @@ const OFFLINE_FALLBACK_LAUNCHES = [
     launch_year: '2006',
     launch_date_local: '2006-03-24T22:30:00Z',
     launch_success: false,
+    status_name: 'Launch Failure',
+    status_abbrev: 'Failure',
+    mission_description:
+      'Inaugural Falcon 1 orbital demonstration flight carrying the USAFA FalconSAT-2 magnetosphere probe; terminated roughly 33 seconds after liftoff due to a fuel leak and fire.',
+    orbit_name: 'Low Earth Orbit',
+    orbit_abbrev: 'LEO',
+    pad_name: 'Omelek Island',
+    pad_location: 'Kwajalein Atoll, Marshall Islands',
+    webcast_url: null,
+    webcast_live: false,
     rocket: { rocket_id: '133', rocket_name: 'Falcon 1', rocket_type: '1' },
   },
   {
@@ -27,6 +37,16 @@ const OFFLINE_FALLBACK_LAUNCHES = [
     launch_year: '2012',
     launch_date_local: '2012-10-08T00:35:00Z',
     launch_success: true,
+    status_name: 'Launch Successful',
+    status_abbrev: 'Success',
+    mission_description:
+      'First operational Commercial Resupply Services cargo flight of the Dragon spacecraft to the International Space Station.',
+    orbit_name: 'Low Earth Orbit',
+    orbit_abbrev: 'LEO',
+    pad_name: 'Space Launch Complex 40',
+    pad_location: 'Cape Canaveral SFS, FL, USA',
+    webcast_url: null,
+    webcast_live: false,
     rocket: { rocket_id: '1', rocket_name: 'Falcon 9', rocket_type: 'v1.0' },
   },
   {
@@ -35,6 +55,16 @@ const OFFLINE_FALLBACK_LAUNCHES = [
     launch_year: '2018',
     launch_date_local: '2018-02-06T20:45:00Z',
     launch_success: true,
+    status_name: 'Launch Successful',
+    status_abbrev: 'Success',
+    mission_description:
+      'Maiden demonstration launch of the Falcon Heavy heavy-lift launch vehicle, placing a dummy payload into a heliocentric Mars-crossing orbit.',
+    orbit_name: 'Heliocentric Orbit',
+    orbit_abbrev: 'HCO',
+    pad_name: 'Launch Complex 39A',
+    pad_location: 'Kennedy Space Center, FL, USA',
+    webcast_url: null,
+    webcast_live: false,
     rocket: { rocket_id: '161', rocket_name: 'Falcon Heavy', rocket_type: 'Heavy' },
   },
   {
@@ -43,6 +73,16 @@ const OFFLINE_FALLBACK_LAUNCHES = [
     launch_year: '2020',
     launch_date_local: '2020-05-30T19:22:45Z',
     launch_success: true,
+    status_name: 'Launch Successful',
+    status_abbrev: 'Success',
+    mission_description:
+      'First crewed orbital test flight of Crew Dragon Endeavour carrying NASA astronauts to the International Space Station.',
+    orbit_name: 'Low Earth Orbit',
+    orbit_abbrev: 'LEO',
+    pad_name: 'Launch Complex 39A',
+    pad_location: 'Kennedy Space Center, FL, USA',
+    webcast_url: null,
+    webcast_live: false,
     rocket: { rocket_id: '164', rocket_name: 'Falcon 9', rocket_type: 'Block 5' },
   },
   {
@@ -51,13 +91,122 @@ const OFFLINE_FALLBACK_LAUNCHES = [
     launch_year: '2026',
     launch_date_local: '2026-11-12T04:36:30Z',
     launch_success: true,
+    status_name: 'Launch Successful',
+    status_abbrev: 'Success',
+    mission_description:
+      'National security space launch mission deployed aboard a Falcon 9 Block 5 from Vandenberg Space Force Base.',
+    orbit_name: 'Low Earth Orbit',
+    orbit_abbrev: 'LEO',
+    pad_name: 'Space Launch Complex 4E',
+    pad_location: 'Vandenberg SFB, CA, USA',
+    webcast_url: null,
+    webcast_live: false,
     rocket: { rocket_id: '164', rocket_name: 'Falcon 9', rocket_type: 'Block 5' },
   },
 ];
 
+function getOfflineFallbackUpcoming() {
+  const now = Date.now();
+  const buildNet = (hoursFromNow) =>
+    new Date(now + hoursFromNow * 60 * 60 * 1000).toISOString();
+
+  return [
+    {
+      launch_id: 'offline-upcoming-1',
+      flight_number: 746,
+      mission_name: 'Starlink Group 31-2 (Starship Flight 15)',
+      launch_year: new Date(now + 36 * 60 * 60 * 1000).toISOString().slice(0, 4),
+      net: buildNet(36),
+      status_name: 'To Be Confirmed',
+      status_abbrev: 'TBC',
+      mission_description:
+        'Orbital deployment mission aboard Starship V3 carrying next-generation Starlink satellites to Low Earth Orbit.',
+      orbit_name: 'Low Earth Orbit',
+      orbit_abbrev: 'LEO',
+      pad_name: 'Orbital Launch Pad 2',
+      pad_location: 'SpaceX Starbase, TX, USA',
+      webcast_url: null,
+      webcast_live: false,
+      rocket: { rocket_id: '522', rocket_name: 'Starship', rocket_type: 'V3' },
+    },
+    {
+      launch_id: 'offline-upcoming-2',
+      flight_number: 747,
+      mission_name: 'USSF-317',
+      launch_year: new Date(now + 72 * 60 * 60 * 1000).toISOString().slice(0, 4),
+      net: buildNet(72),
+      status_name: 'Go for Launch',
+      status_abbrev: 'Go',
+      mission_description:
+        'Dedicated national security payload scheduled aboard a Falcon 9 Block 5 vehicle.',
+      orbit_name: 'Low Earth Orbit',
+      orbit_abbrev: 'LEO',
+      pad_name: 'Space Launch Complex 4E',
+      pad_location: 'Vandenberg SFB, CA, USA',
+      webcast_url: null,
+      webcast_live: false,
+      rocket: { rocket_id: '164', rocket_name: 'Falcon 9', rocket_type: 'Block 5' },
+    },
+    {
+      launch_id: 'offline-upcoming-3',
+      flight_number: 748,
+      mission_name: 'USSF-266',
+      launch_year: new Date(now + 120 * 60 * 60 * 1000).toISOString().slice(0, 4),
+      net: buildNet(120),
+      status_name: 'To Be Determined',
+      status_abbrev: 'TBD',
+      mission_description:
+        'Polar orbit constellation deployment mission launching from Vandenberg SFB.',
+      orbit_name: 'Polar Orbit',
+      orbit_abbrev: 'PO',
+      pad_name: 'Space Launch Complex 4E',
+      pad_location: 'Vandenberg SFB, CA, USA',
+      webcast_url: null,
+      webcast_live: false,
+      rocket: { rocket_id: '164', rocket_name: 'Falcon 9', rocket_type: 'Block 5' },
+    },
+  ];
+}
+
 let launchesCache = { data: null, expiresAt: 0 };
+let upcomingCache = { data: null, expiresAt: 0 };
 let rocketsCache = { data: null, expiresAt: 0 };
 const launchByFlightCache = new Map();
+
+/**
+ * Select the highest-priority valid HTTP(S) webcast URL from Launch Library 2 vidURLs.
+ * Official webcasts (type.id === 1) take precedence over higher-priority unofficial streams.
+ * @param {any} vidURLs
+ * @returns {string | null}
+ */
+function pickWebcastUrl(vidURLs) {
+  if (!Array.isArray(vidURLs) || vidURLs.length === 0) return null;
+
+  const normalized = vidURLs
+    .map((entry) => {
+      if (typeof entry === 'string') {
+        return { url: entry, isOfficial: false, priority: 0 };
+      }
+      if (entry && typeof entry.url === 'string') {
+        return {
+          url: entry.url,
+          isOfficial: Boolean(entry.type && entry.type.id === 1),
+          priority: typeof entry.priority === 'number' ? entry.priority : 0,
+        };
+      }
+      return null;
+    })
+    .filter((entry) => entry && /^https?:\/\//i.test(entry.url));
+
+  if (normalized.length === 0) return null;
+
+  normalized.sort((a, b) => {
+    if (a.isOfficial !== b.isOfficial) return a.isOfficial ? -1 : 1;
+    return b.priority - a.priority;
+  });
+
+  return normalized[0].url;
+}
 
 /**
  * Fetch JSON from Launch Library 2 primary host, falling back to lldev on rate limit or network error.
@@ -87,12 +236,7 @@ async function fetchLL2(pathAndQuery) {
   throw lastError || new Error('Failed to fetch from Launch Library 2');
 }
 
-/**
- * Map a Launch Library 2 launch record into the legacy GraphQL LaunchType shape.
- * @param {any} item
- * @param {number} fallbackNumber
- */
-function mapLaunch(item, fallbackNumber) {
+function extractBaseLaunchFields(item) {
   const rocketConfig = (item.rocket && item.rocket.configuration) || {};
   const missionName =
     (item.mission && item.mission.name) ||
@@ -102,20 +246,60 @@ function mapLaunch(item, fallbackNumber) {
     'Unknown Mission';
 
   return {
-    flight_number:
-      typeof item.agency_launch_attempt_count === 'number'
-        ? item.agency_launch_attempt_count
-        : fallbackNumber,
     mission_name: missionName,
     launch_year: item.net ? String(item.net).slice(0, 4) : null,
-    launch_date_local: item.net || null,
-    launch_success: Boolean(item.status && item.status.id === 3),
+    status_name: (item.status && item.status.name) || null,
+    status_abbrev: (item.status && item.status.abbrev) || null,
+    mission_description: (item.mission && item.mission.description) || null,
+    orbit_name:
+      (item.mission && item.mission.orbit && item.mission.orbit.name) || null,
+    orbit_abbrev:
+      (item.mission && item.mission.orbit && item.mission.orbit.abbrev) || null,
+    pad_name: (item.pad && item.pad.name) || null,
+    pad_location:
+      (item.pad && item.pad.location && item.pad.location.name) || null,
+    webcast_url: pickWebcastUrl(item.vidURLs || item.vid_urls),
+    webcast_live: Boolean(item.webcast_live),
     rocket: {
       rocket_id:
         rocketConfig.id != null ? String(rocketConfig.id) : 'unknown',
       rocket_name: rocketConfig.name || 'Unknown Rocket',
       rocket_type: rocketConfig.variant || rocketConfig.family || 'Unknown',
     },
+  };
+}
+
+/**
+ * Map a Launch Library 2 launch record into the GraphQL LaunchType shape.
+ * @param {any} item
+ * @param {number} fallbackNumber
+ */
+function mapLaunch(item, fallbackNumber) {
+  return {
+    flight_number:
+      typeof item.agency_launch_attempt_count === 'number'
+        ? item.agency_launch_attempt_count
+        : fallbackNumber,
+    ...extractBaseLaunchFields(item),
+    launch_date_local: item.net || null,
+    launch_success: Boolean(item.status && item.status.id === 3),
+  };
+}
+
+/**
+ * Map a Launch Library 2 upcoming launch record into UpcomingLaunchType shape.
+ * @param {any} item
+ * @param {number} idx
+ */
+function mapUpcomingLaunch(item, idx) {
+  return {
+    launch_id: String((item && item.id) || `upcoming-${idx + 1}`),
+    flight_number:
+      typeof item.agency_launch_attempt_count === 'number'
+        ? item.agency_launch_attempt_count
+        : null,
+    ...extractBaseLaunchFields(item),
+    net: item.net || null,
   };
 }
 
@@ -164,13 +348,6 @@ async function getLaunches() {
 
 async function getLaunchByFlightNumber(flightNumber) {
   const now = Date.now();
-  if (launchesCache.data && launchesCache.expiresAt > now) {
-    const cached = launchesCache.data.find(
-      (l) => l.flight_number === flightNumber
-    );
-    if (cached) return cached;
-  }
-
   const singleCached = launchByFlightCache.get(flightNumber);
   if (singleCached && singleCached.expiresAt > now) {
     return singleCached.data;
@@ -178,14 +355,20 @@ async function getLaunchByFlightNumber(flightNumber) {
 
   try {
     const payload = await fetchLL2(
-      `/launch/?lsp__id=${SPACEX_LSP_ID}&agency_launch_attempt_count=${flightNumber}`
+      `/launch/?lsp__id=${SPACEX_LSP_ID}&agency_launch_attempt_count=${flightNumber}&mode=detailed`
     );
+    const listFallback =
+      launchesCache.data && launchesCache.expiresAt > now
+        ? launchesCache.data.find((l) => l.flight_number === flightNumber)
+        : null;
     const first =
       Array.isArray(payload.results) && payload.results.length > 0
         ? mapLaunch(payload.results[0], flightNumber)
-        : OFFLINE_FALLBACK_LAUNCHES.find(
+        : listFallback ||
+          OFFLINE_FALLBACK_LAUNCHES.find(
             (l) => l.flight_number === flightNumber
-          ) || null;
+          ) ||
+          null;
     if (first) {
       launchByFlightCache.set(flightNumber, {
         data: first,
@@ -195,13 +378,50 @@ async function getLaunchByFlightNumber(flightNumber) {
     return first;
   } catch (err) {
     console.warn(
-      `LL2 launch ${flightNumber} fetch failed, checking offline fallback:`,
+      `LL2 launch ${flightNumber} fetch failed, checking cache and offline fallback:`,
       err.message
     );
+    if (launchesCache.data && launchesCache.expiresAt > now) {
+      const listFallback = launchesCache.data.find(
+        (l) => l.flight_number === flightNumber
+      );
+      if (listFallback) return listFallback;
+    }
     return (
       OFFLINE_FALLBACK_LAUNCHES.find((l) => l.flight_number === flightNumber) ||
       null
     );
+  }
+}
+
+async function getUpcomingLaunches() {
+  const now = Date.now();
+  if (upcomingCache.data && upcomingCache.expiresAt > now) {
+    return upcomingCache.data;
+  }
+
+  try {
+    const payload = await fetchLL2(
+      `/launch/upcoming/?lsp__id=${SPACEX_LSP_ID}&hide_recent_previous=true&limit=20`
+    );
+    const results = Array.isArray(payload.results) ? payload.results : [];
+    const activeUpcoming = results.filter(
+      (item) => !(item && item.status && (item.status.id === 3 || item.status.id === 4))
+    );
+    if (activeUpcoming.length === 0) {
+      return getOfflineFallbackUpcoming();
+    }
+    const mapped = activeUpcoming.map((item, idx) =>
+      mapUpcomingLaunch(item, idx)
+    );
+    upcomingCache = { data: mapped, expiresAt: now + CACHE_TTL_MS };
+    return mapped;
+  } catch (err) {
+    console.warn(
+      'LL2 upcoming launches fetch failed, using offline fallback:',
+      err.message
+    );
+    return getOfflineFallbackUpcoming();
   }
 }
 
@@ -254,6 +474,37 @@ const LaunchType = new GraphQLObjectType({
     launch_year: { type: GraphQLString },
     launch_date_local: { type: GraphQLString },
     launch_success: { type: GraphQLBoolean },
+    status_name: { type: GraphQLString },
+    status_abbrev: { type: GraphQLString },
+    mission_description: { type: GraphQLString },
+    orbit_name: { type: GraphQLString },
+    orbit_abbrev: { type: GraphQLString },
+    pad_name: { type: GraphQLString },
+    pad_location: { type: GraphQLString },
+    webcast_url: { type: GraphQLString },
+    webcast_live: { type: GraphQLBoolean },
+    rocket: { type: RocketType },
+  }),
+});
+
+// UpcomingLaunch type
+const UpcomingLaunchType = new GraphQLObjectType({
+  name: 'UpcomingLaunch',
+  fields: () => ({
+    launch_id: { type: GraphQLString },
+    flight_number: { type: GraphQLInt },
+    mission_name: { type: GraphQLString },
+    launch_year: { type: GraphQLString },
+    net: { type: GraphQLString },
+    status_name: { type: GraphQLString },
+    status_abbrev: { type: GraphQLString },
+    mission_description: { type: GraphQLString },
+    orbit_name: { type: GraphQLString },
+    orbit_abbrev: { type: GraphQLString },
+    pad_name: { type: GraphQLString },
+    pad_location: { type: GraphQLString },
+    webcast_url: { type: GraphQLString },
+    webcast_live: { type: GraphQLBoolean },
     rocket: { type: RocketType },
   }),
 });
@@ -285,6 +536,12 @@ const RootQuery = new GraphQLObjectType({
       },
       resolve(parent, args) {
         return getLaunchByFlightNumber(args.flight_number);
+      },
+    },
+    upcomingLaunches: {
+      type: new GraphQLList(UpcomingLaunchType),
+      resolve() {
+        return getUpcomingLaunches();
       },
     },
     rockets: {
